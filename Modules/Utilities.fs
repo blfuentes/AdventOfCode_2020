@@ -5,8 +5,8 @@ open System.IO
 let GetLinesFromFile(path: string) =
     File.ReadLines(__SOURCE_DIRECTORY__ + @"../../" + path)
 
-let rec combination num list = 
+let rec combination (num: int, list: List<'T>) : List<List<'T>> = 
     match num, list with
     | 0, _ -> [[]]
     | _, [] -> []
-    | k, (x::xs) -> List.map ((@) [x]) (combination (k-1) xs) @ combination k xs
+    | k, (x::xs) -> List.map ((@) [x]) (combination ((k-1), xs)) @ (combination (k, xs))
