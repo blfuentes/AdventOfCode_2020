@@ -5,6 +5,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Modules/Utilities.fs" />
+    <Compile Include="Model\PasswordPolicy.fs" />
     <Compile Include="day00\part01\day00_part01.fs" />
     <Compile Include="day00\part02\day00_part02.fs" />
     <Compile Include="day01\part01\day01_part01.fs" />
