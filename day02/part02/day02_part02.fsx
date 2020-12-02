@@ -21,9 +21,10 @@ let inputCheck = inputLines
  
 let passwordIsValid(check: PasswordPolicy) : bool =
     let checkCode = check.code |> Array.ofSeq
-    (
-        (checkCode.[check.min-1] = (check.element |> char) && checkCode.[check.max-1] <> (check.element |> char)) || 
-        (checkCode.[check.min-1] <> (check.element |> char) && checkCode.[check.max-1] = (check.element |> char))
-    )
+    (checkCode.[check.min-1] = (check.element |> char)) <> (checkCode.[check.max-1] = (check.element |> char))
+    //(
+    //    (checkCode.[check.min-1] = (check.element |> char) && checkCode.[check.max-1] <> (check.element |> char)) || 
+    //    (checkCode.[check.min-1] <> (check.element |> char) && checkCode.[check.max-1] = (check.element |> char))
+    //)
 
 let numberOfValids = inputCheck |> List.filter (fun check -> passwordIsValid check) |> List.length
