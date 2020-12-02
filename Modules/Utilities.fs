@@ -13,3 +13,7 @@ let rec combination (num: int, list: List<'T>) : List<List<'T>> =
     | 0, _ -> [[]]
     | _, [] -> []
     | k, (x::xs) -> List.map ((@) [x]) (combination ((k-1), xs)) @ (combination (k, xs))
+
+// XOR OPERATOR
+let (^@) a b =
+    a <> b
