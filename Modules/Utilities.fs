@@ -9,11 +9,17 @@ let GetLinesFromFile(path: string) =
 let GetLinesFromFileFSI(path: string) =
     File.ReadLines(path)
 
-let rec combination (num: int, list: List<'T>) : List<List<'T>> = 
+let rec combination (num, list: 'a list) : 'a list list = 
     match num, list with
     | 0, _ -> [[]]
     | _, [] -> []
     | k, (x::xs) -> List.map ((@) [x]) (combination ((k-1), xs)) @ (combination (k, xs))
+
+//let rec combination (num: int, list: List<'T>) : List<List<'T>> = 
+//    match num, list with
+//    | 0, _ -> [[]]
+//    | _, [] -> []
+//    | k, (x::xs) -> List.map ((@) [x]) (combination ((k-1), xs)) @ (combination (k, xs))
 
 // XOR OPERATOR
 let (^@) (a: bool) (b:bool) : bool =
