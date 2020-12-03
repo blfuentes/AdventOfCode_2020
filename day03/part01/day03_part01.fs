@@ -22,23 +22,23 @@ let trees =
 let transportTrees (numPos: int) (input: list<int[]>) : list<int[]> =
     input |> List.map (fun t -> [|t.[0] + numPos * width; t.[1]|])
 
+let rec countCollisions (currentForest: list<int[]>) initX initY maxwidth maxheight right down =
+    match initY <= maxheight with
+    | true -> 
+        let point = [|initX + right; initY + down|]
+        let newWidth =
+            match point.[0] >= maxwidth with
+            | true -> maxwidth + width
+            | false -> maxwidth
+        let newForest =
+            match point.[0] >= maxwidth with
+            | true -> transportTrees 1 currentForest
+            | false -> currentForest
+
+        match newForest |> List.exists (fun t -> t.[0] = point.[0] && t.[1] = point.[1]) with 
+        | true -> 1 + (countCollisions newForest (initX + right) (initY + down) newWidth maxheight right down)
+        | _ -> countCollisions newForest (initX + right) (initY + down) newWidth maxheight right down
+    | false -> 0
+
 let execute =
-    let mutable idx = 0
-    let mutable forests = 0
-    let mutable maxWidth = width 
-    let points =
-        seq {
-            for jdx in [|0..height - 1|] do
-                let point = [|idx + 3; jdx + 1|]
-                if point.[0] >= maxWidth then 
-                    forests <- forests + 1
-                    maxWidth <- maxWidth + width
-                else
-                    forests <- forests
-                let checkForest = transportTrees forests trees
-                match checkForest |> List.exists (fun t -> t.[0] = point.[0] && t.[1] = point.[1]) with 
-                | true -> yield point
-                | _ -> ()
-                idx <- idx + 3
-        } |>List.ofSeq
-    points.Length
+    countCollisions trees 0 0 width height 3 1

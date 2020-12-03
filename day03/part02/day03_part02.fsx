@@ -27,6 +27,30 @@ let transportTrees (numPos: int) (input: list<int[]>) : list<int[]> =
     input |> List.map (fun t -> [|t.[0] + numPos * width; t.[1]|])
 let trees2 = transportTrees 1 trees
 
+let rec countCollisions (currentForest: list<int[]>) initX initY maxwidth maxheight right down =
+    match initY <= maxheight with
+    | true -> 
+        let point = [|initX + right; initY + down|]
+        let newWidth =
+            match point.[0] >= maxwidth with
+            | true -> maxwidth + width
+            | false -> maxwidth
+        let newForest =
+            match point.[0] >= maxwidth with
+            | true -> transportTrees 1 currentForest
+            | false -> currentForest
+
+        match newForest |> List.exists (fun t -> t.[0] = point.[0] && t.[1] = point.[1]) with 
+        | true -> 1 + (countCollisions newForest (initX + right) (initY + down) newWidth maxheight right down)
+        | _ -> countCollisions newForest (initX + right) (initY + down) newWidth maxheight right down
+    | false -> 0
+
+countCollisions trees 0 0 width height 1 1
+countCollisions trees 0 0 width height 3 1
+countCollisions trees 0 0 width height 5 1
+countCollisions trees 0 0 width height 7 1
+countCollisions trees 0 0 width height 1 1
+
 let getCollisions currentForest right down= 
     let mutable idx = 0
     let mutable forests = 0
@@ -57,3 +81,6 @@ let slopesToCheck = [[|1; 1|]; [|3; 1|]; [|5; 1|]; [|7; 1|]; [|1; 2|]]
 
 let result = slopesToCheck |> List.map (fun s -> getCollisions trees s.[0] s.[1] ) |> List.fold (*) 1
 result
+
+let result2 = slopesToCheck |> List.map (fun s -> countCollisions trees 0 0 width height s.[0] s.[1] ) |> List.fold (*) 1
+result2
