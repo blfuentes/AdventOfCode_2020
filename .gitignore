@@ -2,3 +2,4 @@ obj
 bin
 .ionide
 .vs
+.fake
