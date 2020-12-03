@@ -51,6 +51,23 @@ countCollisions trees 0 0 width height 5 1
 countCollisions trees 0 0 width height 7 1
 countCollisions trees 0 0 width height 1 1
 
+let getCollisionsBasic (currentForest: list<int[]>) initX initY right down maxwidth maxheight =
+    let positions = [initY..down..maxheight]
+    seq {
+        for pos in initY..down..maxheight do
+            let currentPos = positions |> List.findIndex (fun x -> x = pos)
+            let point = [|((initX + right) * (currentPos + 1)) % maxwidth; pos + down|]
+            match currentForest |> List.exists (fun t -> t.[0] = point.[0] && t.[1] = point.[1]) with 
+            | true -> yield point
+            | _ -> ()
+    } |> Seq.length
+
+getCollisionsBasic trees 0 0 1 1 width height
+getCollisionsBasic trees 0 0 3 1 width height
+getCollisionsBasic trees 0 0 5 1 width height
+getCollisionsBasic trees 0 0 7 1 width height
+getCollisionsBasic trees 0 0 1 1 width height
+
 let getCollisions currentForest right down= 
     let mutable idx = 0
     let mutable forests = 0
@@ -84,3 +101,6 @@ result
 
 let result2 = slopesToCheck |> List.map (fun s -> countCollisions trees 0 0 width height s.[0] s.[1] ) |> List.fold (*) 1
 result2
+
+let result3 = slopesToCheck |> List.map (fun s -> getCollisionsBasic trees 0 0 s.[0] s.[1] width height  ) |> List.fold (*) 1
+result3

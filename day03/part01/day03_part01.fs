@@ -22,23 +22,5 @@ let trees =
 let transportTrees (numPos: int) (input: list<int[]>) : list<int[]> =
     input |> List.map (fun t -> [|t.[0] + numPos * width; t.[1]|])
 
-let rec countCollisions (currentForest: list<int[]>) initX initY maxwidth maxheight right down =
-    match initY <= maxheight with
-    | true -> 
-        let point = [|initX + right; initY + down|]
-        let newWidth =
-            match point.[0] >= maxwidth with
-            | true -> maxwidth + width
-            | false -> maxwidth
-        let newForest =
-            match point.[0] >= maxwidth with
-            | true -> transportTrees 1 currentForest
-            | false -> currentForest
-
-        match newForest |> List.exists (fun t -> t.[0] = point.[0] && t.[1] = point.[1]) with 
-        | true -> 1 + (countCollisions newForest (initX + right) (initY + down) newWidth maxheight right down)
-        | _ -> countCollisions newForest (initX + right) (initY + down) newWidth maxheight right down
-    | false -> 0
-
 let execute =
-    countCollisions trees 0 0 width height 3 1
+    getCollisionsBasic trees 0 0 3 1 width height

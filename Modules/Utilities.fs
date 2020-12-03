@@ -29,3 +29,15 @@ let (|Regex|_|) pattern input =
     let m = Regex.Match(input, pattern)
     if m.Success then Some(List.tail [ for g in m.Groups -> g.Value ])
     else None
+
+// DAY 03
+let getCollisionsBasic (currentForest: list<int[]>) initX initY right down maxwidth maxheight =
+    let positions = [initY..down..maxheight]
+    seq {
+        for pos in initY..down..maxheight do
+            let currentPos = positions |> List.findIndex (fun x -> x = pos)
+            let point = [|((initX + right) * (currentPos + 1)) % maxwidth; pos + down|]
+            match currentForest |> List.exists (fun t -> t.[0] = point.[0] && t.[1] = point.[1]) with 
+            | true -> yield point
+            | _ -> ()
+    } |> Seq.length
