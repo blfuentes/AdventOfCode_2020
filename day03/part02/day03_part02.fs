@@ -4,7 +4,7 @@ open System.IO
 open Utilities
 
 let path = "day03/day03_input.txt"
-let values = GetLinesFromFile(path) |> Array.ofSeq |> Array.map (fun line -> line.ToCharArray())
+let values = GetLinesFromFile(path) |> Array.map (fun line -> line.ToCharArray())
 
 let width = values.[0].Length
 let height = values.Length

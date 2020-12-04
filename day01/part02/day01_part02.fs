@@ -3,7 +3,7 @@ open System.IO
 open Utilities
 
 let path = "day01/day01_input.txt"
-let inputLines = GetLinesFromFile(path) |> Seq.map int |> Seq.toList
+let inputLines = GetLinesFromFile(path) |> List.ofArray |> List.map (int)
 
 let execute =
     let comb3 = combination(3, inputLines)

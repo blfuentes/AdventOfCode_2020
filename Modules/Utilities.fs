@@ -7,7 +7,7 @@ open System.Text.RegularExpressions
 open PasswordPolicy
 
 let GetLinesFromFile(path: string) =
-    File.ReadLines(__SOURCE_DIRECTORY__ + @"../../" + path)
+    File.ReadAllLines(__SOURCE_DIRECTORY__ + @"../../" + path)
 
 let GetLinesFromFileFSI2(path: string) =
     File.ReadAllLines(path)

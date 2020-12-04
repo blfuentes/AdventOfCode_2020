@@ -25,3 +25,20 @@ let split2 lst =
     (fst result)::(snd result)
 
 printfn "%A" (split2 thelist)
+
+
+let list = [1; 2; 3; 0; 2; 4; 0; 0; 5; 6; 0; 7]
+
+list
+|> Seq.fold (fun state number ->
+    match number with
+    | 0 -> []::state
+    | x -> 
+        match state with
+        | [] -> [] // never here, actually
+        | h::t -> [x::h]@t
+    )
+    [[]]
+|> List.map List.rev
+|> List.rev
+|> List.filter (List.isEmpty >> not)

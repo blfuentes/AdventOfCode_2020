@@ -6,7 +6,7 @@ open PasswordPolicy
 
 
 let path = "day02/day02_input.txt"
-let inputLines = List.ofSeq <| GetLinesFromFile(path)
+let inputLines = List.ofArray <| GetLinesFromFile(path)
 
 let extract l =
     match l with

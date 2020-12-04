@@ -6,7 +6,7 @@ open Utilities
 
 
 let path = "day04/day04_input.txt"
-let inputLines = GetLinesFromFile(path) |> Array.ofSeq |> List.ofArray
+let inputLines = GetLinesFromFile(path) |> List.ofArray
 
 let allFields = [|"byr"; "iyr"; "eyr"; "hgt"; "hcl"; "ecl"; "pid"; "cid"|]
 let requiredFields = [|"byr"; "iyr"; "eyr"; "hgt"; "hcl"; "ecl"; "pid"|]
