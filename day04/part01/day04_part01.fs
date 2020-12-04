@@ -11,21 +11,10 @@ let inputLines = GetLinesFromFile(path) |> Array.ofSeq |> List.ofArray
 let allFields = [|"byr"; "iyr"; "eyr"; "hgt"; "hcl"; "ecl"; "pid"; "cid"|]
 let requiredFields = [|"byr"; "iyr"; "eyr"; "hgt"; "hcl"; "ecl"; "pid"|]
 
-let passportList = new List<List<string>>()
-passportList.Add(new List<string>())
+let values = getLinesGroupBySeparator inputLines ""
 
-let values = 
-    let mutable currentIndex = 0
-    for line in inputLines do
-        match line with 
-        | "" -> 
-            passportList.Add(new List<string>())
-            currentIndex <- currentIndex + 1
-        | _ -> passportList.Item(currentIndex).AddRange(line.Split(' '))
-    passportList
-
-let passPortIsValid (credentials: List<string>) =
-    requiredFields |> Array.forall (fun field -> credentials.Exists(fun cred -> cred.StartsWith(field)))
+let passPortIsValid (credentials: string list) =
+    requiredFields |> Array.forall (fun field -> credentials |> List.exists(fun cred -> cred.StartsWith(field)))
 
 let execute =
-    passportList |> List.ofSeq |> List.filter(fun p -> passPortIsValid p) |> List.length
+    values |> List.filter(fun p -> passPortIsValid p) |> List.length

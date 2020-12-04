@@ -21,6 +21,31 @@ let rec combination (num, list: 'a list) : 'a list list =
     | _, [] -> []
     | k, (x::xs) -> List.map ((@) [x]) (combination ((k-1), xs)) @ (combination (k, xs))
 
+let getLinesGroupBySeparator (inputLines: string list) (separator: string) =
+    let complete = 
+        seq {
+            for line in inputLines do
+                yield! line.Split(' ')
+        } |> List.ofSeq
+    let folder (a) (cur, acc) = 
+        match a with
+        | _ when a <> separator -> a::cur, acc
+        | _ -> [], cur::acc
+    
+    let result = List.foldBack folder (complete) ([List.last complete], []) 
+    (fst result)::(snd result)
+
+//let split lst =
+//    let folder (a, b) (cur, acc) = 
+//        match a with
+//        | _ when a < b -> a::cur, acc
+//        | _ -> [a], cur::acc
+
+//    let result = List.foldBack folder (List.pairwise lst) ([List.last lst], []) 
+//    (fst result)::(snd result)
+
+//printfn "%A" (split [1; 2; 3; 2; 2; 4; 1; 5;])
+
 //let rec combination (num: int, list: List<'T>) : List<List<'T>> = 
 //    match num, list with
 //    | 0, _ -> [[]]
