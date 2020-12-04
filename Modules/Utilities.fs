@@ -35,6 +35,30 @@ let getLinesGroupBySeparator (inputLines: string list) (separator: string) =
     let result = List.foldBack folder (complete) ([List.last complete], []) 
     (fst result)::(snd result)
 
+
+let getLinesGroupBySeparator2 (inputLines: string list) (separator: string) =
+    let complete = 
+        seq {
+            for line in inputLines do
+                yield! line.Split(' ')
+        } |> List.ofSeq
+    let folder (a) (cur, acc) = 
+        match a with
+        | _ when a <> separator -> a::cur, acc
+        | _ -> [], cur::acc
+        
+    let result = List.foldBack folder (complete) ([], [])
+    (fst result)::(snd result)
+
+let folder (a) (cur, acc) = 
+    match a with
+    | _ when a <> 0 -> a::cur, acc
+    | _ -> [], cur::acc
+
+let split lst =
+    let result = List.foldBack folder (lst) ([], [])
+    (fst result)::(snd result)
+
 //let split lst =
 //    let folder (a, b) (cur, acc) = 
 //        match a with

@@ -4,6 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <None Include="playground.fsx" />
     <Compile Include="Model\PasswordPolicy.fs" />
     <Compile Include="Modules/Utilities.fs" />
     <Compile Include="day00\part01\day00_part01.fs" />
