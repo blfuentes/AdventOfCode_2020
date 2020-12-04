@@ -1,10 +1,16 @@
 module Utilities
 
+open System
 open System.IO
 open System.Text.RegularExpressions
 
+open PasswordPolicy
+
 let GetLinesFromFile(path: string) =
     File.ReadLines(__SOURCE_DIRECTORY__ + @"../../" + path)
+
+let GetLinesFromFileFSI2(path: string) =
+    File.ReadAllLines(path)
 
 let GetLinesFromFileFSI(path: string) =
     File.ReadLines(path)
@@ -41,3 +47,35 @@ let getCollisionsBasic (currentForest: list<int[]>) initX initY right down maxwi
             | true -> yield point
             | _ -> ()
     } |> Seq.length
+
+// DAY 04
+let byrValid (elem:string) =
+    elem.Length = 4 && (elem |> int) >= 1920 && (elem |> int) <= 2002
+
+let iyrValid (elem:string) =
+    elem.Length = 4 && (elem |> int) >= 2010 && (elem |> int) <= 2020
+
+let eyrValid (elem:string)=
+    elem.Length = 4 && (elem |> int) >= 2020 && (elem |> int) <= 2030
+
+let hgtValid (elem:string)=
+    let parts =
+        match elem with
+        | Regex @"(?<height>\d+)(?<unittype>\w+)" [m; M] -> Some { height= m |> int; unittype = M }
+        | _ -> None
+    match parts with
+    | Some { HeightType.height = height; HeightType.unittype = unittype; } when unittype = "cm" -> height >= 150 && height <= 193
+    | Some { HeightType.height = height; HeightType.unittype = unittype; } when unittype = "in" -> height >= 59 && height <= 76
+    | _ -> false
+
+let hclValid (elem:string)=
+    match elem with
+    | Regex @"#[0-9a-f]{6}" result -> true
+    | _ -> false
+
+
+let eclValid (elem:string)=
+    ["amb"; "blu"; "brn"; "gry"; "grn"; "hzl"; "oth"] |> List.contains(elem)
+
+let pidValid (elem:string)=
+    elem.Length = 9 && elem |> Seq.forall Char.IsDigit
