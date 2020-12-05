@@ -23,6 +23,7 @@
     <Content Include="day04\test_input_valid04.txt" />
     <Compile Include="day04\part01\day04_part01.fs" />
     <Compile Include="day04\part02\day04_part02.fs" />
+    <Content Include="day05\test_input_complete.txt" />
     <Compile Include="day05\part01\day05_part01.fs" />
     <Compile Include="day05\part02\day05_part02.fs" />
     <Compile Include="day06\part01\day06_part01.fs" />

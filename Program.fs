@@ -9,32 +9,32 @@ let from whom =
 [<EntryPoint>]
 let main argv =
     // DAY 01
-    let resultday01Part1 = day01_part01.execute
-    printfn "Final result Day 01 part 1: %i" resultday01Part1
-    let resultday02Part2 = day01_part02.execute
-    printfn "Final result Day 01 part 2: %i" resultday02Part2
-    printfn ""
+    //let resultday01Part1 = day01_part01.execute
+    //printfn "Final result Day 01 part 1: %i" resultday01Part1
+    //let resultday02Part2 = day01_part02.execute
+    //printfn "Final result Day 01 part 2: %i" resultday02Part2
+    //printfn ""
 
     // DAY 02
-    let resultday02Part1 = day02_part01.execute
-    printfn "Final result Day 02 part 1: %i" resultday02Part1
-    let resultday02Part2 = day02_part02.execute
-    printfn "Final result Day 02 part 2: %i" resultday02Part2
-    printfn ""
+    //let resultday02Part1 = day02_part01.execute
+    //printfn "Final result Day 02 part 1: %i" resultday02Part1
+    //let resultday02Part2 = day02_part02.execute
+    //printfn "Final result Day 02 part 2: %i" resultday02Part2
+    //printfn ""
 
     // DAY 03
-    let resultday03Part1 = day03_part01.execute
-    printfn "Final result Day 03 part 1: %i" resultday03Part1
-    let resultday03Part2 = day03_part02.execute
-    printfn "Final result Day 03 part 2: %i" resultday03Part2
-    printfn ""
+    //let resultday03Part1 = day03_part01.execute
+    //printfn "Final result Day 03 part 1: %i" resultday03Part1
+    //let resultday03Part2 = day03_part02.execute
+    //printfn "Final result Day 03 part 2: %i" resultday03Part2
+    //printfn ""
 
     // DAY 04
-    let resultday04Part1 = day04_part01.execute
-    printfn "Final result Day 04 part 1: %i" resultday04Part1
-    let resultday04Part2 = day04_part02.execute
-    printfn "Final result Day 04 part 2: %i" resultday04Part2
-    printfn ""
+    //let resultday04Part1 = day04_part01.execute
+    //printfn "Final result Day 04 part 1: %i" resultday04Part1
+    //let resultday04Part2 = day04_part02.execute
+    //printfn "Final result Day 04 part 2: %i" resultday04Part2
+    //printfn ""
 
     // DAY 05
     let resultday05Part1 = day05_part01.execute
