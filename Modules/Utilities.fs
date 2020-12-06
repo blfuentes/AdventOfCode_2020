@@ -141,6 +141,9 @@ let rec calculateSeat minRowCur maxRowCur minColCur maxColCur (index:int) (seatd
         | _ -> 0
     | false -> minRowCur * 8 + minColCur
 
+let calculateBinarySeat (seatdefinition: string) =
+    Convert.ToInt32(String(seatdefinition.Replace('F', '0').Replace('B', '1').Replace('L', '0').Replace('R', '1').ToCharArray()), 2)
+
 // DAY 06
 let concatStringList (list:string list) =
     seq {

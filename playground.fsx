@@ -1,4 +1,18 @@
-﻿let thelist = [1; 2; 3; 0; 2; 4; 0; 5; 6; 0; 7]
+﻿open System
+open System.IO
+open System.Text.RegularExpressions
+
+let thelist = [1; 2; 3; 0; 2; 4; 0; 5; 6; 0; 7]
+
+let calculateBinarySeat (seatdefinition: string) =
+    //let xxx = String(seatdefinition.Replace('F', '0').Replace('B', '1').Replace('L', '0').Replace('R', '1').ToCharArray() |> Array.rev)
+    //let newSeatDefinition = String(seatdefinition.Replace('F', '0').Replace('B', '1').Replace('L', '0').Replace('R', '1').ToCharArray() |> Array.rev)
+    Convert.ToInt32(String(seatdefinition.Replace('F', '0').Replace('B', '1').Replace('L', '0').Replace('R', '1').ToCharArray()), 2)
+
+calculateBinarySeat "FBFBBFFRLR"
+calculateBinarySeat "BFFFBBFRRR"
+calculateBinarySeat "FFFBBBFRRR"
+calculateBinarySeat "BBFFBBFRLL"
 
 let folder (a) (cur, acc) = 
     match a with
