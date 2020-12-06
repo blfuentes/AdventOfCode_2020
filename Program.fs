@@ -44,18 +44,18 @@ let main argv =
     //printfn ""
 
     // DAY 06
-    let resultday06Part1 = day06_part01.execute
-    printfn "Final result Day 06 part 1: %i" resultday06Part1
-    let resultday06Part2 = day06_part02.execute
-    printfn "Final result Day 06 part 2: %i" resultday06Part2
-    printfn ""
+    //let resultday06Part1 = day06_part01.execute
+    //printfn "Final result Day 06 part 1: %i" resultday06Part1
+    //let resultday06Part2 = day06_part02.execute
+    //printfn "Final result Day 06 part 2: %i" resultday06Part2
+    //printfn ""
 
     // DAY 07
-    //let resultday07Part1 = day07_part01.execute
-    //printfn "Final result Day 07 part 1: %A" resultday07Part1
-    //let resultday07Part2 = day07_part02.execute
-    //printfn "Final result Day 07 part 2: %A" resultday07Part2
-    //printfn ""
+    let resultday07Part1 = day07_part01.execute
+    printfn "Final result Day 07 part 1: %A" resultday07Part1
+    let resultday07Part2 = day07_part02.execute
+    printfn "Final result Day 07 part 2: %A" resultday07Part2
+    printfn ""
 
     // DAY 08
     //let resultday08Part1 = day08_part01.execute

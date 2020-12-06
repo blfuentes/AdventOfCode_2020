@@ -140,3 +140,25 @@ let rec calculateSeat minRowCur maxRowCur minColCur maxColCur (index:int) (seatd
         | 'R' -> calculateSeat minRowCur maxRowCur (minColCur + (maxColCur + 1 - minColCur) / 2) maxColCur  (index + 1) seatdefinition
         | _ -> 0
     | false -> minRowCur * 8 + minColCur
+
+// DAY 06
+let concatStringList (list:string list) =
+    seq {
+        for l in list do
+            yield! l.ToCharArray()
+    } |> List.ofSeq
+
+let concatStringListSeparated (list:string list) =
+    seq {
+        for l in list do
+            yield l.ToCharArray()
+    } |> List.ofSeq
+
+let commonElements (input: char array list) =
+    let inputAsList = input |> List.map (List.ofArray)
+    let inputAsSet = List.map Set.ofList inputAsList
+    let elements =  Seq.reduce Set.intersect inputAsSet
+    elements
+
+let commonElements2 (input: char array list) =
+    input |> List.map (List.ofArray) |> Seq.map Set.ofList |> Set.intersectMany

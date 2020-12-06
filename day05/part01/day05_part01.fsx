@@ -8,9 +8,9 @@ open System
 open Utilities
 open PasswordPolicy
 
-//let file = "test_input.txt"
+let file = "test_input.txt"
 //let file = "test_input_complete.txt"
-let file = "day05_input.txt"
+//let file = "day05_input.txt"
 let path = __SOURCE_DIRECTORY__ + @"../../" + file
 let inputLines = GetLinesFromFileFSI2(path)
 
