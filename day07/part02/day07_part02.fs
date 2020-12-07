@@ -8,6 +8,8 @@ open Utilities
 let path = "day07/day07_input.txt"
 
 let inputLines = GetLinesFromFile(path)
+let elements = parseBagsInput inputLines |> List.ofSeq
+let shinyBag = elements |> List.filter(fun b -> b.Name = "shiny gold") |> List.head
 
 let execute =
-    0
+    countBags 0 shinyBag.Content elements

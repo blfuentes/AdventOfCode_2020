@@ -1,7 +1,7 @@
 ﻿open System.IO
 open System.Collections.Generic
 
-#load @"../../Model/PasswordPolicy.fs"
+#load @"../../Model/CustomDataTypes.fs"
 #load @"../../Modules/Utilities.fs"
 
 open Utilities

@@ -1,10 +1,10 @@
 ﻿open System.IO
 
+#load @"../../Model/CustomDataTypes.fs"
 #load @"../../Modules/Utilities.fs"
-#load @"../../Model/PasswordPolicy.fs"
 
 open Utilities
-open PasswordPolicy
+open CustomDataTypes
 
 //let file = "test_input.txt"
 let file = "day02_input.txt"

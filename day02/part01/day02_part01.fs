@@ -2,7 +2,7 @@
 
 open System.IO
 open Utilities
-open PasswordPolicy
+open CustomDataTypes
 
 
 let path = "day02/day02_input.txt"

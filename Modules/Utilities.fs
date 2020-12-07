@@ -4,7 +4,7 @@ open System
 open System.IO
 open System.Text.RegularExpressions
 
-open PasswordPolicy
+open CustomDataTypes
 
 let GetLinesFromFile(path: string) =
     File.ReadAllLines(__SOURCE_DIRECTORY__ + @"../../" + path)
@@ -165,3 +165,44 @@ let commonElements (input: char array list) =
 
 let commonElements2 (input: char array list) =
     input |> List.map (List.ofArray) |> Seq.map Set.ofList |> Set.intersectMany
+
+// DAY 07
+let parseBagsInput (input:string array) =
+    seq {
+        for line in input do
+            let parts = line.Replace("bags", "").Replace("bag", "").Split([|"contain"|], StringSplitOptions.None)
+            let content = 
+                seq {
+                    let contentList = parts.[1].Split(',') |> Array.map (fun x -> x.Trim())
+                    for content in contentList do
+                        let element = 
+                            match content with
+                            | Regex @"(?<size>\d+)\s(?<color>\w+\s\w+)" [s; c] -> Some { Name = c.Trim(); Size = (s |> int); Content = [] }
+                            | _ -> None
+                        if element.IsSome then
+                            yield element.Value                        
+                } |> List.ofSeq
+            let element = 
+                Some {
+                    Name = parts.[0].Trim();
+                    Size = 1;
+                    Content = content
+                }
+            yield element.Value
+    }
+
+let rec countBagContainers (originalBag: ChristmasBag) (childcontainers: ChristmasBag list) (allcontainers: ChristmasBag list) =
+    match childcontainers.IsEmpty with
+    | true -> false
+    | false ->
+        match (childcontainers |> List.exists (fun c -> c.Name = originalBag.Name)) with
+        | true -> true
+        | false -> 
+            (childcontainers |> List.map(fun c -> countBagContainers originalBag ((allcontainers |> List.find(fun s -> s.Name = c.Name)).Content) allcontainers) |> List.exists (fun c -> c))
+
+let rec countBags (currentCount: int) (childcontainers: ChristmasBag list) (allcontainers: ChristmasBag list)=
+    match childcontainers.IsEmpty with
+    | true -> currentCount
+    | false -> 
+        let childrenSize = childcontainers |> List.map (fun c -> c.Size + c.Size * countBags 0 ((allcontainers |> List.find(fun s -> s.Name = c.Name)).Content) allcontainers) |> List.sum
+        currentCount + childrenSize

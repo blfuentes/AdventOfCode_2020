@@ -2,11 +2,11 @@
 open System.Collections.Generic
 open System
 
-#load @"../../Model/PasswordPolicy.fs"
+#load @"../../Model/CustomDataTypes.fs"
 #load @"../../Modules/Utilities.fs"
 
 open Utilities
-open PasswordPolicy
+open CustomDataTypes
 
 //let file = "test_input.txt"
 //let file = "test_input_invalid.txt"
