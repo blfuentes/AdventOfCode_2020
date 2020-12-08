@@ -59,6 +59,9 @@ let split lst =
     let result = List.foldBack folder (lst) ([], [])
     (fst result)::(snd result)
 
+let updateElement index element list = 
+  list |> List.mapi (fun i v -> if i = index then element else v)
+
 //let split lst =
 //    let folder (a, b) (cur, acc) = 
 //        match a with
@@ -219,18 +222,16 @@ let rec calculateAccumulator (currentValue: int) (consumedOps: int list) (newOpI
         | HandheldOpType.NOP -> calculateAccumulator currentValue (consumedOps @ [newOpIdx]) (newOpIdx + 1) program
         | _ -> currentValue
 
-let rec calculateAccumulatorComplex (currentValue: int) (consumedOps: int list) (newOpIdx: int) (consumed: bool) (checkOpIdx: int list) (program: HandledOperation[]) =
+let rec calculateAccumulatorComplex (currentValue: int) (consumedOps: int list) (newOpIdx: int) (program: HandledOperation[]) =
     if newOpIdx = program.Length then
-        currentValue
+        (true, currentValue)
     else
         match consumedOps |> List.contains(newOpIdx) with
-        | true -> calculateAccumulatorComplex 0 [] 0 false checkOpIdx.Tail program
+        | true -> (false, currentValue)
         | false -> 
             let newOp = program.[newOpIdx]
             match newOp.Op with
-            | HandheldOpType.ACC -> calculateAccumulatorComplex (currentValue + newOp.Offset) (consumedOps @ [newOpIdx]) (newOpIdx + 1) consumed checkOpIdx program
-            | HandheldOpType.JMP when checkOpIdx.Length > 0 && newOpIdx = checkOpIdx.Head && not consumed -> calculateAccumulatorComplex currentValue (consumedOps @ [newOpIdx]) (newOpIdx + 1) true checkOpIdx.Tail program
-            | HandheldOpType.JMP -> calculateAccumulatorComplex currentValue (consumedOps @ [newOpIdx]) (newOpIdx + newOp.Offset) false checkOpIdx program
-            | HandheldOpType.NOP when checkOpIdx.Length > 0 && newOpIdx = checkOpIdx.Head && not consumed -> calculateAccumulatorComplex currentValue (consumedOps @ [newOpIdx]) (newOpIdx + newOp.Offset) true checkOpIdx program
-            | HandheldOpType.NOP -> calculateAccumulatorComplex currentValue (consumedOps @ [newOpIdx]) (newOpIdx + 1) false checkOpIdx program
-            | _ -> currentValue
+            | HandheldOpType.ACC -> calculateAccumulatorComplex (currentValue + newOp.Offset) (consumedOps @ [newOpIdx]) (newOpIdx + 1) program
+            | HandheldOpType.JMP -> calculateAccumulatorComplex currentValue (consumedOps @ [newOpIdx]) (newOpIdx + newOp.Offset) program
+            | HandheldOpType.NOP -> calculateAccumulatorComplex currentValue (consumedOps @ [newOpIdx]) (newOpIdx + 1) program
+            | _ -> (false, currentValue)

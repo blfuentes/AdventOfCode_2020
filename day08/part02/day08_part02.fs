@@ -30,4 +30,17 @@ let operations =
 let checkOpIdx = operations |> Array.filter(fun o -> o.Op = HandheldOpType.JMP ||o.Op = HandheldOpType.NOP) |> Array.map(fun o -> Array.IndexOf(operations, o))
 
 let execute =
-    calculateAccumulatorComplex 0 [] 0 false (checkOpIdx |> List.ofArray) operations
+    let rec loop (checkOpIdxList: int list) (program: HandledOperation[]) = 
+        let op = program.[checkOpIdxList.Head]
+        let newOp =
+            match op.Op with
+            | HandheldOpType.JMP -> { Op = HandheldOpType.NOP; Offset = op.Offset }
+            | HandheldOpType.NOP -> { Op = HandheldOpType.JMP; Offset = op.Offset }
+            | _ -> { Op = HandheldOpType.MISSING; Offset = op.Offset }
+        let currentProgram = (updateElement checkOpIdxList.Head newOp (program |> List.ofArray)) |> Array.ofList
+        let sub = calculateAccumulatorComplex 0 [] 0 currentProgram
+        if not (fst sub) && checkOpIdxList.Length > 0 then 
+            loop checkOpIdxList.Tail program
+        else
+            sub
+    snd (loop (checkOpIdx |> List.ofArray) operations)

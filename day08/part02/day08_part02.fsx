@@ -29,22 +29,61 @@ let operations =
             }
     } |> Array.ofSeq
 
-let rec calculateAccumulator (currentValue: int) (consumedOps: int list) (newOpIdx: int) (consumed: bool) (checkOpIdx: int list) (program: HandledOperation[]) =
+let rec calculateAccumulator (currentValue: int) (consumedOps: int list) (newOpIdx: int) (program: HandledOperation[]) =
+    if consumedOps |> List.contains(newOpIdx) then
+        currentValue
+    else
+        let newOp = program.[newOpIdx]
+        match newOp.Op with
+        | HandheldOpType.ACC -> calculateAccumulator (currentValue + newOp.Offset) (consumedOps @ [newOpIdx]) (newOpIdx + 1) program
+        | HandheldOpType.JMP -> calculateAccumulator currentValue (consumedOps @ [newOpIdx]) (newOpIdx + newOp.Offset) program
+        | HandheldOpType.NOP -> calculateAccumulator currentValue (consumedOps @ [newOpIdx]) (newOpIdx + 1) program
+        | _ -> currentValue
+
+let rec calculateAccumulatorComplex (currentValue: int) (consumedOps: int list) (newOpIdx: int) (program: HandledOperation[]) =
     if newOpIdx = program.Length then
         (true, currentValue)
     else
         match consumedOps |> List.contains(newOpIdx) with
-        | true -> calculateAccumulator 0 [] 0 false checkOpIdx.Tail operations
+        | true -> (false, currentValue)
         | false -> 
             let newOp = program.[newOpIdx]
             match newOp.Op with
-            | HandheldOpType.ACC -> calculateAccumulator (currentValue + newOp.Offset) (consumedOps @ [newOpIdx]) (newOpIdx + 1) consumed checkOpIdx program
-            | HandheldOpType.JMP when checkOpIdx.Length > 0 && newOpIdx = checkOpIdx.Head && not consumed -> calculateAccumulator currentValue (consumedOps @ [newOpIdx]) (newOpIdx + 1) true checkOpIdx.Tail program
-            | HandheldOpType.JMP -> calculateAccumulator currentValue (consumedOps @ [newOpIdx]) (newOpIdx + newOp.Offset) false checkOpIdx program
-            | HandheldOpType.NOP when checkOpIdx.Length > 0 && newOpIdx = checkOpIdx.Head && not consumed -> calculateAccumulator currentValue (consumedOps @ [newOpIdx]) (newOpIdx + newOp.Offset) true checkOpIdx program
-            | HandheldOpType.NOP -> calculateAccumulator currentValue (consumedOps @ [newOpIdx]) (newOpIdx + 1) false checkOpIdx program
+            | HandheldOpType.ACC -> calculateAccumulatorComplex (currentValue + newOp.Offset) (consumedOps @ [newOpIdx]) (newOpIdx + 1) program
+            | HandheldOpType.JMP -> calculateAccumulatorComplex currentValue (consumedOps @ [newOpIdx]) (newOpIdx + newOp.Offset) program
+            | HandheldOpType.NOP -> calculateAccumulatorComplex currentValue (consumedOps @ [newOpIdx]) (newOpIdx + 1) program
             | _ -> (false, currentValue)
 
 let checkOpIdx = operations |> Array.filter(fun o -> o.Op = HandheldOpType.JMP ||o.Op = HandheldOpType.NOP) |> Array.map(fun o -> Array.IndexOf(operations, o))
-let result = calculateAccumulator 0 [] 0 false (checkOpIdx |> List.ofArray) operations
-    
+
+let rec loop (checkOpIdxList: int list) (program: HandledOperation[]) = 
+    let op = program.[checkOpIdxList.Head]
+    let newOp =
+        match op.Op with
+        | HandheldOpType.JMP -> { Op = HandheldOpType.NOP; Offset = op.Offset }
+        | HandheldOpType.NOP -> { Op = HandheldOpType.JMP; Offset = op.Offset }
+        | _ -> { Op = HandheldOpType.MISSING; Offset = op.Offset }
+    let currentProgram = (updateElement checkOpIdxList.Head newOp (program |> List.ofArray)) |> Array.ofList
+    let sub = calculateAccumulatorComplex 0 [] 0 currentProgram
+    if not (fst sub) && checkOpIdxList.Length > 0 then 
+        loop checkOpIdxList.Tail program
+    else
+        sub
+
+let result = loop (checkOpIdx |> List.ofArray) operations         
+
+let result2 =
+    let rec loop (checkOpIdxList: int list) (program: HandledOperation[]) = 
+        let op = program.[checkOpIdxList.Head]
+        let newOp =
+            match op.Op with
+            | HandheldOpType.JMP -> { Op = HandheldOpType.NOP; Offset = op.Offset }
+            | HandheldOpType.NOP -> { Op = HandheldOpType.JMP; Offset = op.Offset }
+            | _ -> { Op = HandheldOpType.MISSING; Offset = op.Offset }
+        let currentProgram = (updateElement checkOpIdxList.Head newOp (program |> List.ofArray)) |> Array.ofList
+        let sub = calculateAccumulatorComplex 0 [] 0 currentProgram
+        if not (fst sub) && checkOpIdxList.Length > 0 then 
+            loop checkOpIdxList.Tail program
+        else
+            sub
+    loop (checkOpIdx |> List.ofArray) operations  
