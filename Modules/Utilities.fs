@@ -206,3 +206,31 @@ let rec countBags (currentCount: int) (childcontainers: ChristmasBag list) (allc
     | false -> 
         let childrenSize = childcontainers |> List.map (fun c -> c.Size + c.Size * countBags 0 ((allcontainers |> List.find(fun s -> s.Name = c.Name)).Content) allcontainers) |> List.sum
         currentCount + childrenSize
+
+// Day 08
+let rec calculateAccumulator (currentValue: int) (consumedOps: int list) (newOpIdx: int) (program: HandledOperation[]) =
+    if consumedOps |> List.contains(newOpIdx) then
+        currentValue
+    else
+        let newOp = program.[newOpIdx]
+        match newOp.Op with
+        | HandheldOpType.ACC -> calculateAccumulator (currentValue + newOp.Offset) (consumedOps @ [newOpIdx]) (newOpIdx + 1) program
+        | HandheldOpType.JMP -> calculateAccumulator currentValue (consumedOps @ [newOpIdx]) (newOpIdx + newOp.Offset) program
+        | HandheldOpType.NOP -> calculateAccumulator currentValue (consumedOps @ [newOpIdx]) (newOpIdx + 1) program
+        | _ -> currentValue
+
+let rec calculateAccumulatorComplex (currentValue: int) (consumedOps: int list) (newOpIdx: int) (consumed: bool) (checkOpIdx: int list) (program: HandledOperation[]) =
+    if newOpIdx = program.Length then
+        currentValue
+    else
+        match consumedOps |> List.contains(newOpIdx) with
+        | true -> calculateAccumulatorComplex 0 [] 0 false checkOpIdx.Tail program
+        | false -> 
+            let newOp = program.[newOpIdx]
+            match newOp.Op with
+            | HandheldOpType.ACC -> calculateAccumulatorComplex (currentValue + newOp.Offset) (consumedOps @ [newOpIdx]) (newOpIdx + 1) consumed checkOpIdx program
+            | HandheldOpType.JMP when checkOpIdx.Length > 0 && newOpIdx = checkOpIdx.Head && not consumed -> calculateAccumulatorComplex currentValue (consumedOps @ [newOpIdx]) (newOpIdx + 1) true checkOpIdx.Tail program
+            | HandheldOpType.JMP -> calculateAccumulatorComplex currentValue (consumedOps @ [newOpIdx]) (newOpIdx + newOp.Offset) false checkOpIdx program
+            | HandheldOpType.NOP when checkOpIdx.Length > 0 && newOpIdx = checkOpIdx.Head && not consumed -> calculateAccumulatorComplex currentValue (consumedOps @ [newOpIdx]) (newOpIdx + newOp.Offset) true checkOpIdx program
+            | HandheldOpType.NOP -> calculateAccumulatorComplex currentValue (consumedOps @ [newOpIdx]) (newOpIdx + 1) false checkOpIdx program
+            | _ -> currentValue

@@ -11,3 +11,7 @@ type HeightTypeOption = HeightType option
 // Day 07
 type ChristmasBag =  { Name: string; Size: int; Content: ChristmasBag list }
 type ChristmasBagOption = ChristmasBag option
+
+// Day 08
+type HandheldOpType = ACC | JMP | NOP | MISSING
+type HandledOperation = { Op: HandheldOpType; Offset: int; }
