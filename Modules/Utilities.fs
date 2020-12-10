@@ -21,6 +21,14 @@ let rec combination (num, list: 'a list) : 'a list list =
     | _, [] -> []
     | k, (x::xs) -> List.map ((@) [x]) (combination ((k-1), xs)) @ (combination (k, xs))
 
+let possibleCombinations (combSize: int) (mainList: uint64 list) =
+    seq {
+        for init in mainList do
+            let index = mainList |> List.findIndex(fun e -> e = init)
+            if mainList.Length - combSize > index then
+                yield mainList |> List.skip(index) |> List.take(combSize)
+    } |> List.ofSeq
+
 let getLinesGroupBySeparator (inputLines: string list) (separator: string) =
     let complete = 
         seq {
