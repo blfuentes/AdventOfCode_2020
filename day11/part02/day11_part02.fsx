@@ -43,7 +43,7 @@ let printPlane (dictPlane: Dictionary<(int*int), SeatInfo>)=
 
 let rec findFirstSeat (direction: int[]) (seat: int[]) (originalSeat: int[]) (places: Dictionary<(int*int), SeatInfo>) (limits: int[]) =
     let newSeat = [| seat.[0] + direction.[0]; seat.[1] + direction.[1] |]
-    if newSeat.[0] > limits.[0] || newSeat.[1] >= limits.[1] then
+    if newSeat.[0] > (limits.[0] - 1) || newSeat.[1] > (limits.[1] - 1) then
         places.[(originalSeat.[0], originalSeat.[1])]
     else       
         match places.ContainsKey(newSeat.[0], newSeat.[1]) with
@@ -65,7 +65,7 @@ let getNewPlaces (places: Dictionary<(int*int), SeatInfo>) =
             seq{
                 for dir in directions do
                     let originalSeat = [| fst place.Value.Location; snd place.Value.Location |]
-                    let newSeatPlace = findFirstSeat dir originalSeat originalSeat places [|maxX; maxY|]
+                    let newSeatPlace = findFirstSeat dir originalSeat originalSeat places [|maxY; maxX|]
                     if newSeatPlace.Location <> place.Value.Location then
                         yield newSeatPlace
             } |> List.ofSeq
