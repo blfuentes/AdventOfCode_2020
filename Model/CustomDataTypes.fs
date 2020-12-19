@@ -19,3 +19,7 @@ type HandledOperation = { Op: HandheldOpType; Offset: int; }
 // Day 11
 type SeatStatus = FLOOR | EMPTY | OCCUPIED
 type SeatInfo = { Seat: SeatStatus; Location: (int * int); Content: char }
+
+// Day 12
+type MovementType = NORTH | SOUTH | EAST | WEST | LEFT | RIGHT | FORWARD
+type MovementOperation = { Mov: MovementType; Offset: int }
